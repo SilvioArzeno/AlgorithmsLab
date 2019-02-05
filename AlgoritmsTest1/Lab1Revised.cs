@@ -28,28 +28,34 @@ class Lab1c
         // TODO: Implementa el algoritmo explicado arriba. Ver ejemplo en Main.
         // Complejidad: Ver siguiente TODO
         // Valor: 2.5 puntos
-        
+
         // TODO: en clase indique la complejidad era Theta(N*K), pero resulta
         //       que no es correcta!  Determina cual es la complejidad de este
         //       algoritmo.
         // Valor: 0.5 puntos
-
+        
+        int[] SolvedPrecios = new int[precio.Length];
         for(int i = 0; i < precio.Length; i++)
         {
-            int x = 0;
-            while (i - x < 0)
+            int cheaper = precio[i];
+            int dias = K;
+            while (i < dias - 1)
             {
-                i++;
+                dias--;
             }
+          for(int x = 0; x < dias; x++)
+            {
+               
+                if (cheaper > precio[i - x])
+                {
+                    cheaper = precio[i - x];
+                }
+            }
+         SolvedPrecios[i] = cheaper;
 
-            if (precio[i] > precio[i - x])
-            {
-               precio[i] = precio[i - x];
-            }
-            
         }
 
-        return new int[] {};
+        return SolvedPrecios;
     }
 
     public static void Main()
