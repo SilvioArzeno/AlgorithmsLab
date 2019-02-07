@@ -1,0 +1,20 @@
+Por cada dia i itera los ultimos k dias para ver el valor mas bajo en esos k dias
+
+
+int[] Solve( precios[], int k)
+
+- int[] solved = new int[precios.length] // nuevo arreglo del mismo tamaño que el original para guardar los precios mas baratos en los ultimos k dias
+
+- for int i to precios length   		// itera cada dia
+	- int cheaper = precio[i] 		// el actual precio mas barato
+	- int dias = K  			// Variable para revisar cuantos dias anteriores se pueden revisar
+	while( i < dias - 1) { dias --}  	// Reduce la cantidad de dias hasta los que se puedan revisar
+	for int x to dias  			// itera la cantidad de dias que se pueda
+		If ( cheaper > precio[i-x])  	// Compara el actual precio mas barato con el de X dias anteriores
+			{  	
+			cheaper = precio[i-x]	// Si el precio de X dias anteriores es menor pues ese se convierte en el nuevo precio mas barato
+			}
+	
+	Solved[i] = cheaper  			// Guarda el precio mas barato calculado de cada dia
+
+Return Solved					// Se devuelve el nuevo arreglo
