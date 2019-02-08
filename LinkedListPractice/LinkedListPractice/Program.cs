@@ -6,7 +6,7 @@ namespace LinkedListPractice
     class Program
     {
         static void Main(string[] args)
-        {
+        {/*
             LinkedList<Object> StringList = new LinkedList<Object>();
             StringList.AddFirst("Hello");
             StringList.AddLast("World");
@@ -18,7 +18,15 @@ namespace LinkedListPractice
             }
 
             Console.ReadKey();
+            */
+            LinkedListSilvio practice = new LinkedListSilvio();
 
+            practice.AddNode("Hello world!");
+            practice.AddNode("Always remember");
+            practice.AddNode("Sub 2 PewDiePie");
+
+            practice.AllNodes();
+            Console.ReadKey();
         }
     }
 }
