@@ -21,6 +21,7 @@ namespace LinkedListPractice
         private Node head;
         private Node tail;
         private int ListSize;
+
         public LinkedListSilvio()
         {
             head = null;
@@ -37,10 +38,26 @@ namespace LinkedListPractice
             }
         }
 
-        public void AddNode(object T)
+        public void AddFirst(Object T)
         {
             Node node = new Node(T);
             if (head == null)
+            {
+                head = node;
+                tail = node;
+                ListSize++;
+                return;
+            }
+            node.next = head;
+            head = node;
+            ListSize++;
+
+        }
+
+        public void AddLast(object T)
+        {
+            Node node = new Node(T);
+            if (tail == null)
             {
                 head = node;
                 tail = node;
@@ -51,5 +68,7 @@ namespace LinkedListPractice
             tail = node;
             ListSize++;
         }
+
+
     }
 }

@@ -21,9 +21,9 @@ namespace LinkedListPractice
             */
             LinkedListSilvio practice = new LinkedListSilvio();
 
-            practice.AddNode("Hello world!");
-            practice.AddNode("Always remember");
-            practice.AddNode("Sub 2 PewDiePie");
+            practice.AddLast("Hello world!");
+            practice.AddLast("Always remember");
+            practice.AddFirst("Sub 2 PewDiePie");
 
             practice.AllNodes();
             Console.ReadKey();
