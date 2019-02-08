@@ -23,6 +23,7 @@ namespace PairSumAlgorithm
                     counter++;
                 }
             }
+            
             Console.WriteLine("There are "+counter/2 + " pairs that sum "+ sum );
             Console.ReadKey();
         }
