@@ -40,13 +40,14 @@ namespace LinkedListPractice
         public void AddNode(object T)
         {
             Node node = new Node(T);
-            Node current = head;
-            while(current != null)
+            if (head == null)
             {
-                current = current.next;
+                head = node;
+                tail = node;
+                ListSize++;
+                return;
             }
-
-            current.next= node;
+            tail.next = node;
             tail = node;
             ListSize++;
         }
