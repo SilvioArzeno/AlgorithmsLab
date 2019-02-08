@@ -53,6 +53,7 @@ namespace LinkedListPractice
             node.next = head;
             head.prev = node;
             head = node;
+            node.prev = tail;
             ListSize++;
 
         }
@@ -70,6 +71,7 @@ namespace LinkedListPractice
             tail.next = node;
             node.prev = tail;
             tail = node;
+            node.next = head;
             ListSize++;
         }
 
@@ -82,7 +84,7 @@ namespace LinkedListPractice
             }
 
             object temp = head.data;
-            head.next.prev = null;
+            head.next.prev = tail;
             head = head.next;
             ListSize--;
             Console.WriteLine("Eliminated "+ temp +" from the beginning of the list");
@@ -97,7 +99,7 @@ namespace LinkedListPractice
             }
 
             object temp = tail.data;
-            tail.prev.next = null;
+            tail.prev.next = head;
             tail = tail.prev;
             ListSize--;
             Console.WriteLine("Eliminated "+ temp +" from the ending of the list");
