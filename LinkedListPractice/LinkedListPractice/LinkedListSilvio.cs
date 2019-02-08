@@ -9,12 +9,14 @@ namespace LinkedListPractice
         public class Node
         {
             public Node next;
+            public Node prev;
             public object data;
 
             public Node(Object T)
             {
                 this.data = T;
                 next = null;
+                prev = null;
             }
         }
 
@@ -49,6 +51,7 @@ namespace LinkedListPractice
                 return;
             }
             node.next = head;
+            head.prev = node;
             head = node;
             ListSize++;
 
@@ -65,10 +68,41 @@ namespace LinkedListPractice
                 return;
             }
             tail.next = node;
+            node.prev = tail;
             tail = node;
             ListSize++;
         }
 
+        public void RemoveFirst()
+        {
+            if(head == null)
+            {
+                Console.WriteLine("The list is empty you can't delete anything");
+                return;
+            }
+
+            object temp = head.data;
+            head.next.prev = null;
+            head = head.next;
+            ListSize--;
+            Console.WriteLine("Eliminated "+ temp +" from the beginning of the list");
+        }
+
+        public void RemoveLast()
+        {
+            if (head == null)
+            {
+                Console.WriteLine("The list is empty you can't delete anything");
+                return;
+            }
+
+            object temp = tail.data;
+            tail.prev.next = null;
+            tail = tail.prev;
+            ListSize--;
+            Console.WriteLine("Eliminated "+ temp +" from the ending of the list");
+
+        }
 
     }
 }
