@@ -24,12 +24,13 @@ namespace LinkedListPractice
             practice.AddFirst("Hello world!");
             practice.AddLast("Always remember");
             practice.AddLast("Sub 2 PewDiePie ");
+            practice.AddFirst("T series is gay");
             practice.AddFirst(85000000);
             practice.AddLast("Sub 2 T-series");
             practice.RemoveFirst();
             practice.RemoveLast();
 
-            practice.AllNodes();
+            practice.PrintAll();
             Console.ReadKey();
         }
     }

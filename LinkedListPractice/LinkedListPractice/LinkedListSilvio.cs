@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LinkedListPractice
 {
-    class LinkedListSilvio
+    class LinkedListSilvio : IList
     {
         public class Node
         {
@@ -22,7 +22,7 @@ namespace LinkedListPractice
 
         private Node head;
         private Node tail;
-        private int ListSize;
+        public int ListSize { get; private set; }
 
         public LinkedListSilvio()
         {
@@ -30,7 +30,7 @@ namespace LinkedListPractice
             tail = null;
             ListSize = 0;
         }
-        public void AllNodes()
+        public void PrintAll()
         {
             Node current = head;
             while (current != null)
