@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 
-namespace LinkedListPractice
+namespace ListPractice
 {
     class Program
     {
         static void Main(string[] args)
-        {/*
+        {/* Linked List from C# Library
+
             LinkedList<Object> StringList = new LinkedList<Object>();
             StringList.AddFirst("Hello");
             StringList.AddLast("World");
@@ -19,6 +20,9 @@ namespace LinkedListPractice
 
             Console.ReadKey();
             */
+
+            /* Linked List implementing IList interface created 
+
             LinkedListSilvio practice = new LinkedListSilvio();
 
             practice.AddFirst("Hello world!");
@@ -31,6 +35,20 @@ namespace LinkedListPractice
             practice.RemoveLast();
 
             practice.PrintAll();
+            Console.ReadKey();
+            */
+
+            StaticArrayList list = new StaticArrayList(10);
+
+            list.AddFirst("Hola");
+            list.AddLast(85000000);
+            list.AddFirst("Subscribe to PewDiePie");
+            list.AddLast("Destroy T-Series");
+            for (int i = 0; i < 10; i++)
+            {
+                list.AddFirst("T-series suck");
+            }
+            list.PrintAll();
             Console.ReadKey();
         }
     }

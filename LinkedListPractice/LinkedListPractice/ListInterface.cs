@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LinkedListPractice
+namespace ListPractice
 {
     interface IList
     {
