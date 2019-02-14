@@ -17,34 +17,43 @@ namespace ListPractice
         public int ArraySpace { get; private set; }
         public int CurrentSize { get; private set; }
 
-        void CheckSpace()
+        bool CheckSpace()
         {
             if (CurrentSize == ArraySpace)
-                Console.WriteLine("The list is full, please remove an element if to free some space");
-            return;
+            {
+                Console.WriteLine("The list is full, please remove an element to free some space");
+                return false;
+            }
+
+            else return true;
+
         }
 
         public void AddFirst(object T)
         {
-            CheckSpace();
-            if (CurrentSize != 0)
+            if (CheckSpace())
             {
-                for (int i = CurrentSize - 1; i >= 0; i--)
+                if (CurrentSize != 0)
                 {
-                    ArrayList[i+1] = ArrayList[i];
+                    for (int i = CurrentSize - 1; i >= 0; i--)
+                    {
+                        ArrayList[i + 1] = ArrayList[i];
+                    }
+                    ArrayList[0] = T;
                 }
-                ArrayList[0] = T;
-            }
-            else ArrayList[0] = T;
+                else ArrayList[0] = T;
 
-            CurrentSize++;
+                CurrentSize++;
+            }
         }
 
         public void AddLast(object T)
         {
-            CheckSpace();
-            ArrayList[CurrentSize] = T;
-            CurrentSize++;
+            if (CheckSpace())
+            {
+                ArrayList[CurrentSize] = T;
+                CurrentSize++;
+            }
         }
 
         public void PrintAll()
@@ -73,6 +82,8 @@ namespace ListPractice
             {
                 ArrayList[i] = ArrayList[i - 1];
             }
+
+            CurrentSize--;
         }
 
         public void RemoveLast()
@@ -84,6 +95,7 @@ namespace ListPractice
             }
 
             ArrayList[CurrentSize - 1] = null;
+            CurrentSize--;
         }
     }
 }
