@@ -58,10 +58,34 @@ class DynString
         // TODO: Implementar.
         // Complejidad esperada: O(end - start)
         // Valor: 2 puntos
+        
+        if(start < 0 || end < 0 || start > this.Size || end > this.Size)
+        {
+            throw new Exception("Value not in range");
+        }
 
-        return null;
+        DynString substring = new DynString();
+        substring.arr = new char[end - start + 1];
+        substring.Size = end - start + 1;
+        for (int i = start, j = 0; i < Size; i++, j++)
+        {
+            substring.arr[j] = this.arr[i];
+        }
+
+        return substring;
     }
 
+
+    private void Resize(int Newcapacity)
+    {
+        char[] temp = new char[Newcapacity];
+        for( int i = 0; i< arr.Length && i < temp.Length; i++)
+        {
+            temp[i] = arr[i];
+        }
+
+        arr = temp;
+    }
 
     private const int FACTOR_CRECIMIENTO = 2;  // factor de crecimiento a usar
 
@@ -80,8 +104,31 @@ class DynString
         //                       string str. Nota que la nueva capacidad nunca
         //                       se pasa de 2*(N + M)
         // Valor: 5 puntos
+        if(pos < 0 || pos > Size)
+        {
+            throw new Exception("Index out of range");
+        }
+        if (arr.Length < Size + str.Size)
+        {
+            int NewCapacity = arr.Length;
+            while (NewCapacity < Size + str.Size)
+            {
+                NewCapacity *= FACTOR_CRECIMIENTO;
+            }
+            Resize(NewCapacity);
+        }
+        for( int i = Size - 1; i >= pos; i--)
+        {
+            this.arr[i + str.Size] = this.arr[i];
+        }
+        for( int j = 0, i= pos; j < str.Size; j++, i++)
+        {
+            this.arr[i] = str.arr[j];
+        }
 
+        this.Size += str.Size;
     }
+
 
 
     // Concatenar el str al final de este string
@@ -100,7 +147,12 @@ class DynString
         //       capacidad del arreglo arr.
         // Complejidad esperada: O(N - (end - start))
         // Valor: 3 puntos
+        for(int i = start, j = end + 1; j < Size; i++, j++)
+        {
+            arr[i] = arr[j];
+        }
 
+        this.Size -= end - start + 1;
     }
 
 
@@ -119,6 +171,15 @@ class Lab1a
 {
     public static void Main()
     {
+
+        DynString s = new DynString("Sub 2");
+        DynString t = new DynString("PewDiePie");
+        s.Insert(t, 5);
+        Console.WriteLine(s);
+        s.Erase(0, 4);
+        Console.WriteLine(s);
+        Console.ReadKey();
+        /*
         DynString S = new DynString();
 
         DynString T = new DynString("world");
@@ -134,7 +195,7 @@ class Lab1a
 
         S.Erase(6, 11);
         Console.WriteLine("S = " + S);
-
+        */
 
         // TODO: Disenia un experimento que muestre cual es la complejidad de la
         //       operacion StringBuilder.Append(char) en C#.  Justifica bien tu
