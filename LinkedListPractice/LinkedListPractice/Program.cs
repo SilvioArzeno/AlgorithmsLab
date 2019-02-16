@@ -24,7 +24,7 @@ namespace ListPractice
             
            
             /*------Circular Linked List implementing IList interface created-------------------------*/ 
-
+            /*
             LinkedListSilvio practice = new LinkedListSilvio();
 
             practice.AddFirst("Hello world!");
@@ -38,7 +38,8 @@ namespace ListPractice
 
             practice.PrintAll();
             Console.ReadKey();
-            
+            */
+
             /* --------------Static array list using IList interface-----------------*/
             /*
             StaticArrayList list = new StaticArrayList(10);

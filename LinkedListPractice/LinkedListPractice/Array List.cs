@@ -16,7 +16,16 @@ namespace ListPractice
         private object[] ArrayList;
         public int ArraySpace { get; private set; }
         public int CurrentSize { get; private set; }
+        
 
+        void Resize(int newcapacity)
+        {
+            object[] temp = new object[newcapacity];
+            ArrayList.CopyTo(temp, 0);
+            ArrayList = temp;
+            CurrentSize = temp.Length;
+
+        }
         bool CheckSpace()
         {
             if (CurrentSize == ArraySpace)
