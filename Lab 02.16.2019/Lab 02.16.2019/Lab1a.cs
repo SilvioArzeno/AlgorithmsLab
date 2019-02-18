@@ -64,15 +64,15 @@ class DynString
             throw new Exception("Value not in range");
         }
 
-        DynString substring = new DynString();
-        substring.arr = new char[end - start + 1];
-        substring.Size = end - start + 1;
-        for (int i = start, j = 0; i < Size; i++, j++)
+        DynString ret = new DynString();
+        ret.arr = new char[end - start + 1];
+        ret.Size = end - start + 1;
+        for (int i = start, j = 0; i < Size && j < ret.arr.Length; i++, j++)
         {
-            substring.arr[j] = this.arr[i];
+            ret.arr[j] = this.arr[i];
         }
 
-        return substring;
+        return ret;
     }
 
 
@@ -119,7 +119,7 @@ class DynString
         }
         for( int i = Size - 1; i >= pos; i--)
         {
-            this.arr[i + str.Size] = this.arr[i];
+            arr[i + str.Size] = arr[i];
         }
         for( int j = 0, i= pos; j < str.Size; j++, i++)
         {
@@ -173,11 +173,12 @@ class Lab1a
     {
 
         DynString s = new DynString("Sub 2");
-        DynString t = new DynString("PewDiePie");
+        DynString t = new DynString("PewDiePie and fuck T series");
         s.Insert(t, 5);
         Console.WriteLine(s);
         s.Erase(0, 4);
         Console.WriteLine(s);
+        Console.WriteLine(s.Substring(3,5));
         Console.ReadKey();
         /*
         DynString S = new DynString();

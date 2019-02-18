@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ListPractice
 {
-    class StaticArrayList : IList
+    class StaticArrayList : IListSilvio
     {
 
         public StaticArrayList(int space)
@@ -95,6 +95,7 @@ namespace ListPractice
             CurrentSize--;
         }
 
+
         public void RemoveLast()
         {
             if (CurrentSize == 0)
@@ -105,6 +106,12 @@ namespace ListPractice
 
             ArrayList[CurrentSize - 1] = null;
             CurrentSize--;
+        }
+        
+
+        public void Insert(int pos, object T)
+        {
+
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ListPractice
 {
-    class LinkedListSilvio : IList
+    class LinkedListSilvio : IListSilvio
     {
         public class Node
         {
