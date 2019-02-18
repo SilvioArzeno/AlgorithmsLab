@@ -41,14 +41,15 @@ namespace ListPractice
             */
 
             /* --------------Static array list using IList interface-----------------*/
-            /*
-            StaticArrayList list = new StaticArrayList(10);
+            
+            StaticArrayList list = new StaticArrayList(1);
 
             list.AddFirst("Hola");
             list.AddLast(85000000);
             list.AddFirst("Subscribe to PewDiePie");
             list.AddLast("Destroy T-Series");
             list.AddFirst("T-series suck");
+            list.Insert(3, "We are going down we need your help");
            
             list.PrintAll();
             list.RemoveFirst();
@@ -56,7 +57,8 @@ namespace ListPractice
             list.PrintAll();
 
             Console.ReadKey();
-            */
+            
+            
         }
     }
 }

@@ -10,32 +10,28 @@ namespace ListPractice
         public StaticArrayList(int space)
         {
             ArrayList = new object[space];
-            ArraySpace = space;
             CurrentSize = 0;
         }
         private object[] ArrayList;
-        public int ArraySpace { get; private set; }
         public int CurrentSize { get; private set; }
-        
+
+        const int GROWTH_FACTOR = 2 ;
 
         void Resize(int newcapacity)
         {
             object[] temp = new object[newcapacity];
             ArrayList.CopyTo(temp, 0);
             ArrayList = temp;
-            CurrentSize = temp.Length;
 
         }
         bool CheckSpace()
         {
-            if (CurrentSize == ArraySpace)
+            if (CurrentSize == ArrayList.Length)
             {
-                Console.WriteLine("The list is full, please remove an element to free some space");
-                return false;
+                Resize(ArrayList.Length*GROWTH_FACTOR);
+
             }
-
-            else return true;
-
+            return true;
         }
 
         public void AddFirst(object T)
@@ -111,7 +107,11 @@ namespace ListPractice
 
         public void Insert(int pos, object T)
         {
-
+            for (int i = CurrentSize; i > pos; i--)
+            {
+                ArrayList[i + 1] = ArrayList[i];
+            }
+            ArrayList[pos] = T;
         }
     }
 }

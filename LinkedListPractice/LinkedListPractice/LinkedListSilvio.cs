@@ -106,5 +106,9 @@ namespace ListPractice
 
         }
 
+        public void Insert(int pos, object T)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
