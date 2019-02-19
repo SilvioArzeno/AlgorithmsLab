@@ -31,34 +31,24 @@ namespace ListPractice
                 Resize(ArrayList.Length*GROWTH_FACTOR);
 
             }
+            if(CurrentSize <= ArrayList.Length / Math.Pow(GROWTH_FACTOR, 2))
+            {
+                Resize(ArrayList.Length / GROWTH_FACTOR);
+            }
             return true;
         }
 
         public void AddFirst(object T)
         {
-            if (CheckSpace())
-            {
-                if (CurrentSize != 0)
-                {
-                    for (int i = CurrentSize - 1; i >= 0; i--)
-                    {
-                        ArrayList[i + 1] = ArrayList[i];
-                    }
-                    ArrayList[0] = T;
-                }
-                else ArrayList[0] = T;
-
-                CurrentSize++;
-            }
+            CheckSpace();
+            Insert(0, T);
         }
 
         public void AddLast(object T)
         {
-            if (CheckSpace())
-            {
-                ArrayList[CurrentSize] = T;
-                CurrentSize++;
-            }
+            CheckSpace();
+                Insert(CurrentSize, T);
+            
         }
 
         public void PrintAll()
@@ -102,6 +92,7 @@ namespace ListPractice
 
             ArrayList[CurrentSize - 1] = null;
             CurrentSize--;
+            CheckSpace();
         }
         
 
@@ -112,6 +103,7 @@ namespace ListPractice
                 ArrayList[i + 1] = ArrayList[i];
             }
             ArrayList[pos] = T;
+            CurrentSize++;
         }
     }
 }

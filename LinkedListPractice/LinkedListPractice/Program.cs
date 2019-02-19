@@ -40,7 +40,7 @@ namespace ListPractice
             Console.ReadKey();
             */
 
-            /* --------------Static array list using IList interface-----------------*/
+            /* --------------Static and dynamic array list using IListSilvio interface-----------------*/
             
             StaticArrayList list = new StaticArrayList(1);
 
