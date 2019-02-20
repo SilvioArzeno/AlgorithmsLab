@@ -41,8 +41,8 @@ namespace ListPractice
             */
 
             /* --------------Static and dynamic array list using IListSilvio interface-----------------*/
-            
-            StaticArrayList list = new StaticArrayList(1);
+            /*
+            StaticArrayList<string> list = new StaticArrayList<string>(1);
 
             list.AddFirst("Hola");
             list.AddLast(85000000);
@@ -50,14 +50,16 @@ namespace ListPractice
             list.AddLast("Destroy T-Series");
             list.AddFirst("T-series suck");
             list.Insert(3, "We are going down we need your help");
+            list.Insert(5, "T series will win");
+            list.Erase("T series will win");
            
             list.PrintAll();
             list.RemoveFirst();
             list.RemoveLast();
             list.PrintAll();
-
-            Console.ReadKey();
             
+            Console.ReadKey();
+            */
             
         }
     }

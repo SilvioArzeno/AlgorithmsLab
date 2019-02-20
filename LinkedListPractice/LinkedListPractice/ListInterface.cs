@@ -4,14 +4,14 @@ using System.Text;
 
 namespace ListPractice
 {
-    interface IListSilvio
+    interface IListSilvio<T>
     {
         void PrintAll();
-        void AddFirst(Object T);
-        void AddLast(object T);
+        void AddFirst(T element);
+        void AddLast(T element);
         void RemoveFirst();
         void RemoveLast();
-        void Insert(int pos, object T);
+        void Insert(int pos, T element);
 
     }
 }

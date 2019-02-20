@@ -4,23 +4,26 @@ using System.Text;
 
 namespace ListPractice
 {
-    class StaticArrayList : IListSilvio
+    class StaticArrayList<T> : IListSilvio<T>
     {
 
         public StaticArrayList(int space)
         {
-            ArrayList = new object[space];
+            ArrayList = new T[space];
             CurrentSize = 0;
         }
-        private object[] ArrayList;
+        private T[] ArrayList;
         public int CurrentSize { get; private set; }
 
         const int GROWTH_FACTOR = 2 ;
 
         void Resize(int newcapacity)
         {
-            object[] temp = new object[newcapacity];
-            ArrayList.CopyTo(temp, 0);
+            T[] temp = new T[newcapacity];
+            for(int i = CurrentSize; i > 0; i--)
+            {
+                temp[i - 1] = ArrayList[i - 1];
+            }
             ArrayList = temp;
 
         }
@@ -31,23 +34,23 @@ namespace ListPractice
                 Resize(ArrayList.Length*GROWTH_FACTOR);
 
             }
-            if(CurrentSize <= ArrayList.Length / Math.Pow(GROWTH_FACTOR, 2))
+            if(CurrentSize + 1 <= ArrayList.Length / Math.Pow(GROWTH_FACTOR, 2))
             {
                 Resize(ArrayList.Length / GROWTH_FACTOR);
             }
             return true;
         }
 
-        public void AddFirst(object T)
+        public void AddFirst(T element)
         {
             CheckSpace();
-            Insert(0, T);
+            Insert(0, element);
         }
 
-        public void AddLast(object T)
+        public void AddLast(T element)
         {
             CheckSpace();
-                Insert(CurrentSize, T);
+                Insert(CurrentSize, element);
             
         }
 
@@ -67,43 +70,55 @@ namespace ListPractice
 
         public void RemoveFirst()
         {
-            if (CurrentSize == 0)
-            {
-                Console.WriteLine("This list is empty");
-                return;
-            }
-
-            for(int i = CurrentSize - 1; i > 0; i--)
-            {
-                ArrayList[i] = ArrayList[i - 1];
-            }
-
-            CurrentSize--;
+            CheckSpace();
+            Erase(0);
         }
 
 
         public void RemoveLast()
         {
-            if (CurrentSize == 0)
-            {
-                Console.WriteLine("This list is empty");
-                return;
-            }
-
-            ArrayList[CurrentSize - 1] = null;
-            CurrentSize--;
             CheckSpace();
+            Erase(CurrentSize);
         }
         
 
-        public void Insert(int pos, object T)
+        public void Insert(int pos, T element)
         {
+            CheckSpace();
             for (int i = CurrentSize; i > pos; i--)
             {
-                ArrayList[i + 1] = ArrayList[i];
+                ArrayList[i] = ArrayList[i-1];
             }
-            ArrayList[pos] = T;
+            ArrayList[pos] = element;
             CurrentSize++;
+        }
+
+        public void Erase(int pos)
+        {
+            CheckSpace();
+            if (CurrentSize == 0 || pos < 0 || pos > CurrentSize)
+            {
+                Console.WriteLine("This position is already empty");
+                return;
+            }
+            for (int i = pos ; i < CurrentSize ; i++)
+            {
+                ArrayList[i] = ArrayList[i + 1];
+            }
+            CurrentSize--;
+
+        }
+        public void Erase(T element)
+        {
+            CheckSpace();
+            for(int i = 0; i < CurrentSize; i++)
+            {
+                if (ArrayList[i].Equals(element))
+                {
+                    Erase(i);
+                }
+            }
+            
         }
     }
 }

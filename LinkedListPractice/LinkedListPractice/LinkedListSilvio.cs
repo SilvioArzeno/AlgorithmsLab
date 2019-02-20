@@ -4,17 +4,17 @@ using System.Text;
 
 namespace ListPractice
 {
-    class LinkedListSilvio : IListSilvio
+    class LinkedListSilvio<T> : IListSilvio<T>
     {
         public class Node
         {
             public Node next;
             public Node prev;
-            public object data;
+            public T data;
 
-            public Node(Object T)
+            public Node(T element)
             {
-                this.data = T;
+                this.data = element;
                 next = null;
                 prev = null;
             }
@@ -40,9 +40,9 @@ namespace ListPractice
             }
         }
 
-        public void AddFirst(Object T)
+        public void AddFirst(T element)
         {
-            Node node = new Node(T);
+            Node node = new Node(element);
             if (head == null)
             {
                 head = node;
@@ -58,9 +58,9 @@ namespace ListPractice
 
         }
 
-        public void AddLast(object T)
+        public void AddLast(T element)
         {
-            Node node = new Node(T);
+            Node node = new Node(element);
             if (tail == null)
             {
                 head = node;
@@ -83,7 +83,7 @@ namespace ListPractice
                 return;
             }
 
-            object temp = head.data;
+            T temp = head.data;
             head.next.prev = tail;
             head = head.next;
             ListSize--;
@@ -106,9 +106,19 @@ namespace ListPractice
 
         }
 
-        public void Insert(int pos, object T)
+        public void Insert(int pos, T element)
         {
-            throw new NotImplementedException();
+            Node temp = new Node(element);
+            Node Current = head;
+            for(int i = 0; i < pos; i++)
+            {
+                Current = Current.next;
+            }
+            temp.next = Current;
+            temp.prev = Current.prev;
+            Current.prev.next = temp;
+            Current.next.prev = temp;
+            
         }
     }
 }
