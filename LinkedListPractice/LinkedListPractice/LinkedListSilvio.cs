@@ -52,8 +52,8 @@ namespace ListPractice
             }
             node.next = head;
             head.prev = node;
-            head = node;
             node.prev = tail;
+            head = node;
             ListSize++;
 
         }
@@ -86,6 +86,7 @@ namespace ListPractice
             T temp = head.data;
             head.next.prev = tail;
             head = head.next;
+            tail.next = head;
             ListSize--;
             Console.WriteLine("Eliminated "+ temp +" from the beginning of the list");
         }
@@ -98,7 +99,7 @@ namespace ListPractice
                 return;
             }
 
-            object temp = tail.data;
+            T temp = tail.data;
             tail.prev.next = head;
             tail = tail.prev;
             ListSize--;
@@ -117,8 +118,52 @@ namespace ListPractice
             temp.next = Current;
             temp.prev = Current.prev;
             Current.prev.next = temp;
-            Current.next.prev = temp;
-            
+            Current.prev = temp;
+            ListSize++;
+        }
+
+        public void Erase(int pos)
+        {
+            if (pos == 0)
+                RemoveFirst();
+            else if (pos == ListSize)
+                RemoveLast();
+            else
+            {
+                Node Current = head;
+                for (int i = 0; i < pos; i++)
+                {
+                    Current = Current.next;
+                }
+                Current.prev.next = Current.next;
+                Current.next.prev = Current.prev;
+                Current = null;
+                ListSize--;
+            }
+        }
+
+        public void Erase(T element)
+        {
+            Node current = head;
+            bool found = false;
+            do
+            {
+                if (current.data.Equals(element))
+                {
+                    current.next.prev = current.prev;
+                    current.prev.next = current.next;
+                    current = null;
+                    found = true;
+                    ListSize--;
+                    break;
+                }
+                current = current.next;
+            }
+            while (current != head);
+            if (!found)
+            {
+                Console.WriteLine("Element not found in the list");
+            }
         }
     }
 }

@@ -24,28 +24,27 @@ namespace ListPractice
             
            
             /*------Circular Linked List implementing IList interface created-------------------------*/ 
-            /*
-            LinkedListSilvio practice = new LinkedListSilvio();
+            
+            LinkedListSilvio<string> practice = new LinkedListSilvio<string>();
 
             practice.AddFirst("Hello world!");
             practice.AddLast("Always remember");
             practice.AddLast("Sub 2 PewDiePie ");
             practice.AddFirst("T series is gay");
-            practice.AddFirst(85000000);
             practice.AddLast("Sub 2 T-series");
+            practice.Insert(3, "We are sinking");
             practice.RemoveFirst();
             practice.RemoveLast();
-
+            practice.Erase("We are sinking");
             practice.PrintAll();
             Console.ReadKey();
-            */
+            
 
             /* --------------Static and dynamic array list using IListSilvio interface-----------------*/
             /*
-            StaticArrayList<string> list = new StaticArrayList<string>(1);
+            DynamicArray<string> list = new DynamicArray<string>(1);
 
             list.AddFirst("Hola");
-            list.AddLast(85000000);
             list.AddFirst("Subscribe to PewDiePie");
             list.AddLast("Destroy T-Series");
             list.AddFirst("T-series suck");
@@ -60,6 +59,9 @@ namespace ListPractice
             
             Console.ReadKey();
             */
+
+            /*----------------- Stack and Deque------------*/
+
             
         }
     }

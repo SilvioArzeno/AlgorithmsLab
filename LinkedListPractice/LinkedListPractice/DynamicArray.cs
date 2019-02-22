@@ -4,10 +4,10 @@ using System.Text;
 
 namespace ListPractice
 {
-    class StaticArrayList<T> : IListSilvio<T>
+    class DynamicArray<T> : IListSilvio<T>
     {
 
-        public StaticArrayList(int space)
+        public DynamicArray(int space)
         {
             ArrayList = new T[space];
             CurrentSize = 0;

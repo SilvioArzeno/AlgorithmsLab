@@ -12,6 +12,7 @@ namespace ListPractice
         void RemoveFirst();
         void RemoveLast();
         void Insert(int pos, T element);
-
+        void Erase(int pos);
+        void Erase(T element);
     }
 }
