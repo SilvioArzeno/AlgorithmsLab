@@ -8,23 +8,23 @@ namespace ListPractice
     {
         static void Main(string[] args)
         {/* --------Linked List from C# Library-------------------*/
-            /*
-            LinkedList<Object> StringList = new LinkedList<Object>();
-            StringList.AddFirst("Hello");
-            StringList.AddLast("World");
-            LinkedListNode<Object> node = new LinkedListNode<object>("Sub 2 PewDiePie");
-            StringList.AddAfter(StringList.First, node);
-            foreach(Object a in StringList)
-            {
-                Console.WriteLine(a);
-            }
+         /*
+         LinkedList<Object> StringList = new LinkedList<Object>();
+         StringList.AddFirst("Hello");
+         StringList.AddLast("World");
+         LinkedListNode<Object> node = new LinkedListNode<object>("Sub 2 PewDiePie");
+         StringList.AddAfter(StringList.First, node);
+         foreach(Object a in StringList)
+         {
+             Console.WriteLine(a);
+         }
 
-            Console.ReadKey();
-           */
-            
-           
-            /*------Circular Linked List implementing IList interface created-------------------------*/ 
-            
+         Console.ReadKey();
+        */
+
+
+            /*------Circular Linked List implementing IList interface created-------------------------*/
+            /*
             LinkedListSilvio<string> practice = new LinkedListSilvio<string>();
 
             practice.AddFirst("Hello world!");
@@ -38,7 +38,7 @@ namespace ListPractice
             practice.Erase("We are sinking");
             practice.PrintAll();
             Console.ReadKey();
-            
+            */
 
             /* --------------Static and dynamic array list using IListSilvio interface-----------------*/
             /*
@@ -60,7 +60,29 @@ namespace ListPractice
             Console.ReadKey();
             */
 
-            /*----------------- Stack and Deque------------*/
+            /*----------------- Queue circular array------------*/
+            /*
+            CircularArray<int> Queue = new CircularArray<int>(2);
+            Queue.Enqueue(3);
+            Queue.Enqueue(5);
+            Queue.PeekFirst(); //3
+            Queue.Dequeue();
+            Queue.PeekFirst(); //5
+            Queue.Enqueue(9);
+            Queue.Enqueue(8);
+            Queue.Enqueue(0);
+            Queue.PeekLast(); //0
+            Queue.Dequeue();
+            Queue.Dequeue();
+            Queue.PeekFirst(); //8
+            Queue.Enqueue(13);
+            Queue.Enqueue(19);
+            Queue.Dequeue();
+            Queue.Dequeue();
+            Queue.PrintQueue();
+
+            Console.ReadKey();
+            */
 
             
         }
