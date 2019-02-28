@@ -81,15 +81,16 @@ class TwoStack
         // Complejidad esperada: O(1) avg case
         // Valor: 2.5 puntos
 
+        if (size1 + size2 == arr.Length)
+        {
+            Resize(2 * arr.Length);
+        }
         if (stackNumber == StackNumber.ONE)
         {
-            if(size1 >= arr.Length)
+            
+            for (int i = size1; i > 0; i--)
             {
-                Resize(size1 * 2);
-            }
-            for (int i = size1; i < 0; i--)
-            {
-                arr[i + 1] = arr[i];
+                arr[i] = arr[i - 1];
             }
             arr[0] = value;
             size1++;
@@ -97,10 +98,6 @@ class TwoStack
 
         else
         {
-            if(size2 >= arr.Length)
-            {
-                Resize(size2 * 2);
-            }
 
             for (int i = arr.Length-size2; i < arr.Length && i > 0; i++)
             {
@@ -127,21 +124,18 @@ class TwoStack
         // Valor: 2.5 puntos
         if(stackNumber == StackNumber.ONE)
         {
-            if(size1 <= arr.Length / 4)
-            {
-                Resize(arr.Length / 2);
-            }
+           
             int ret = arr[0];
-            for (int i = 0; i < arr.Length - 1; i++)
+            for(int i= 0; i < size1-1; i++)
             {
-                arr[i] = arr[i+1];
+                arr[i] = arr[i + 1];
             }
             size1--;
             return ret;
         }
         else
         {
-            if (size1 <= arr.Length / 4)
+            if (size1 +size2 <= arr.Length / 4)
             {
                 Resize(arr.Length / 2);
             }
@@ -191,8 +185,18 @@ class TwoStack
         // TODO: implementar
         // Complejidad esperada: Theta(N)
         // Valor: 2 puntos
-        
-        
+
+        int[] temp = new int[newCapacity];
+        for(int i = 0; i < size1; i++)
+        {
+            temp[i] = arr[i];
+        }
+        for (int i = arr.Length - 1, j = newCapacity - 1; i >= arr.Length - size2 && j > 0; i--, j--)
+        {
+            temp[j] = arr[i];
+        }
+
+        arr = temp;
     }
     
 }
