@@ -112,16 +112,19 @@ public class DLinkedList<T>
 
         DLinkedList<T> Removed = new DLinkedList<T>();
         DLinkNode current = head;
+        DLinkNode CurrentRemoved = Removed.head;
         for(int i = 0; i < toRemove.Length && current != null; i++)
         {
             if (toRemove[i])
             {
-                if (Removed.head == null && current == head)
+                if (CurrentRemoved == null && current == head)
                 {
                     Removed.head = current;
                     Removed.tail = current;
                     head = current.next;
                     current = head;
+                    CurrentRemoved = Removed.head;
+                    CurrentRemoved.next = null;
                     Removed.Size++;
                     Size--;
                 }
@@ -131,19 +134,33 @@ public class DLinkedList<T>
                     Removed.tail = current;
                     current.prev.next = current.next;
                     current = current.next;
+                    CurrentRemoved = Removed.head;
+                    current.prev = CurrentRemoved.prev;
+                    CurrentRemoved.prev = null;
+                    CurrentRemoved.next = null;
+                    Removed.Size++;
+                    Size--;
+                }
+                else if(Removed.head != null && current.next != null)
+                {
+                    CurrentRemoved.next = current;
+                    current.prev.next = current.next;
+                    current.prev = CurrentRemoved;
                     current = current.next;
-                    tail.next = null;
+                    CurrentRemoved = CurrentRemoved.next;
+                    CurrentRemoved.next = null;
+                    Removed.tail = CurrentRemoved;
                     Removed.Size++;
                     Size--;
                 }
                 else
                 {
-                    Removed.tail.next = current;
-                    current.prev.next = current.next;
-                    current.prev = Removed.tail;
-                    Removed.tail = current;
-                    current = current.next;
-                    Removed.tail.next = null;
+                    CurrentRemoved.next = current;
+                    current.prev.next = null;
+                    tail = current.prev;
+                    CurrentRemoved = CurrentRemoved.next;
+                    CurrentRemoved.next = null;
+                    Removed.tail = CurrentRemoved;
                     Removed.Size++;
                     Size--;
                 }
@@ -221,7 +238,9 @@ public class ThanosFingerSnap
             else
                 toRemove[i] = false;
             if (toRemove[i])
-                Console.Error.WriteLine( heroes[i] );
+            {
+                //Console.Error.WriteLine( heroes[i] );
+            }
         }
 
         DLinkedList<string> L = new DLinkedList<string>(heroes);
