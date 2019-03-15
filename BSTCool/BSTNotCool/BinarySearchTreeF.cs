@@ -21,10 +21,8 @@ namespace BSTNotCool
                 value = _value;
             }
         }
-
+        public int size;
         private TreeNode root;
-        public int size { get; set; }
-
         private int subtreesize(TreeNode x)
         {
             if(x == null)
@@ -35,7 +33,8 @@ namespace BSTNotCool
         }
         public  int Size()
         {
-            return subtreesize(root);
+            size = subtreesize(root);
+            return size;
         }
 
         public void Add( K key, V value)
@@ -54,7 +53,7 @@ namespace BSTNotCool
                 prev = cur;
                 if (key.CompareTo(cur.key) == 0 && !cur.Removed)
                 {
-                    throw new DuplicateKeyException();
+                    return;
                 }
                
                 if(key.CompareTo(cur.key) < 0 && !cur.Removed)
@@ -78,6 +77,7 @@ namespace BSTNotCool
                     else
                     {
                         cur.Removed = false;
+                        size++;
                     }
                 }
             }
@@ -92,13 +92,14 @@ namespace BSTNotCool
             {
                 prev.right = newNode;
             }
-            size++;
             cur = prev;
             while(cur != null)
             {
                 cur.SubTreeSize = subtreesize(cur.left) + subtreesize(cur.right) + 1;
                 cur = cur.parent;
             }
+
+            size++;
         }
 
         public V Remove(K key)
@@ -118,68 +119,10 @@ namespace BSTNotCool
         private V RemoveNode(TreeNode x)
         {
             V ret = x.value;
-
+            x.Removed = true;
+            x.SubTreeSize--;
             TreeNode p = x.parent;
-            if(x.left == null && x.right == null)
-            {//No tiene hijos
-                if(p == null)
-                {// Es el root
-                    root = null;
-                    return ret;
-                }
-                if(x.key.CompareTo(p.key) > 0)
-                {// Hijo derecho
-                    p.right = null;
-                }
-                else if(x.key.CompareTo(p.key) < 0)
-                {//Hijo Izquierdo
-                    p.left = null;
-                }
-            }
-            else if(x.left != null && x.right == null)
-            {// Tiene un hijo izquierdo 
-                TreeNode y = x.left;
-                if (p == null)
-                {
-                    // x == root
-                    root = y;
-                }
-                else if (x == p.left)
-                {
-                    p.left = y;
-                }
-                else
-                {
-                    p.right = y;
-                }
-                y.parent = p;
-            }
-            else if (x.right != null && x.left == null)
-            {// Tiene un hijo derecho 
-                TreeNode y = x.right;
-                if (p == null)
-                {
-                    // x == root
-                    root = y;
-                }
-                else if (x == p.left)
-                {
-                    p.left = y;
-                }
-                else
-                {
-                    p.right = y;
-                }
-                y.parent = p;
-            }
-
-            else if (x.right != null && x.left != null)
-            {// Tiene dos hijos
-                TreeNode s = MinNode(x.right);  // Succesor
-                x.key = s.key;
-                x.value = s.value;
-                RemoveNode(s);
-            }
+            
             TreeNode cur = p;
             while (cur != null)
             {
