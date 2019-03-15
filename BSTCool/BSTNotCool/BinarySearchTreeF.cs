@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BSTCool
+namespace BSTNotCool
 {
     class DuplicateKeyException : Exception { }
     class OrderedDictionary<K,V> where K : IComparable<K>
@@ -14,6 +14,7 @@ namespace BSTCool
             public V value;
             public TreeNode left, right, parent;
             public int SubTreeSize = 1;
+            public bool Removed = false;
             public TreeNode(K _key, V _value )
             {
                 key = _key;
@@ -40,7 +41,7 @@ namespace BSTCool
         public void Add( K key, V value)
         { //Add a new node to the tree
 
-             if(size == 0)
+             if(root == null)
             {// Empty tree
                 root = new TreeNode(key, value);
                 size = 1;
@@ -158,9 +159,9 @@ namespace BSTCool
             else if (x.right != null && x.left != null)
             {// Tiene dos hijos
                 TreeNode s = MinNode(x.right);  // Succesor
-                RemoveNode(s);
                 x.key = s.key;
                 x.value = s.value;
+                RemoveNode(s);
             }
             TreeNode cur = p;
             while (cur != null)
