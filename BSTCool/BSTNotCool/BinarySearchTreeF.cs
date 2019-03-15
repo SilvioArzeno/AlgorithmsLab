@@ -50,18 +50,35 @@ namespace BSTNotCool
             TreeNode cur = root, prev = null;
             while(cur != null)
             {
-                if(key.CompareTo(cur.key) == 0)
+
+                prev = cur;
+                if (key.CompareTo(cur.key) == 0 && !cur.Removed)
                 {
                     throw new DuplicateKeyException();
                 }
-                prev = cur;
-                if(key.CompareTo(cur.key) < 0)
+               
+                if(key.CompareTo(cur.key) < 0 && !cur.Removed)
                 {
                     cur = cur.left;
                 }
-                else if(key.CompareTo(cur.key) > 0)
+                else if(key.CompareTo(cur.key) > 0 && !cur.Removed)
                 {
                     cur = cur.right;
+                }
+                else if(cur.Removed)
+                {
+                    if(key.CompareTo(cur.key) > 0)
+                    {
+                        cur = cur.right;
+                    }
+                    else if (key.CompareTo(cur.key) < 0)
+                    {
+                        cur = cur.left;
+                    }
+                    else
+                    {
+                        cur.Removed = false;
+                    }
                 }
             }
 
