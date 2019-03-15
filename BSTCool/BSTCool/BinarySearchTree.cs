@@ -113,7 +113,7 @@ namespace BSTCool
                 {// Hijo derecho
                     p.right = null;
                 }
-                else if(x.key.CompareTo(p.key) > 0)
+                else if(x.key.CompareTo(p.key) < 0)
                 {//Hijo Izquierdo
                     p.left = null;
                 }
@@ -186,6 +186,20 @@ namespace BSTCool
             return cur;
         }
 
+        private TreeNode MaxNode(TreeNode cur)
+        {
+            if(cur == null)
+            {
+                return null;
+            }
+
+            while(cur.right != null)
+            {
+                cur = cur.right;
+            }
+            return cur;
+        }
+
         private TreeNode FindNode(K key)
         {
             TreeNode cur = root;
@@ -206,6 +220,152 @@ namespace BSTCool
 
             }
             return null;
+        }
+
+        public V Find(K key)
+        {
+            TreeNode ret = FindNode(key);
+            if(ret == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return ret.value;
+        }
+
+        public K Min()
+        {
+            TreeNode min = MinNode(root);
+            if(min == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return min.key;
+        }
+
+        public K Max()
+        {
+            TreeNode max = MaxNode(root);
+            if (max == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return max.key;
+        }
+
+        public K Successor(K key)
+        {
+            TreeNode cur = root, best = null;
+            while (cur != null)
+            {
+                if (key.CompareTo(cur.key) == 0)
+                {
+                    cur = cur.right;
+                }
+
+                else if (key.CompareTo(cur.key) < 0)
+                {
+                    if (best == null || best.key.CompareTo(cur.key) > 0)
+                    {
+                        best = cur;
+                    }
+                    cur = cur.left;
+                }
+
+                else
+                {
+                    cur = cur.right;
+                }
+            }
+
+            if(best == null) // no hay successor
+            {
+                throw new KeyNotFoundException();
+            }
+            return best.key;
+        }
+
+        public K Predecessor(K key)
+        {
+            TreeNode cur = root, best = null;
+            while (cur != null)
+            {
+                if (key.CompareTo(cur.key) == 0)
+                {
+                    cur = cur.left;
+                }
+
+                else if (key.CompareTo(cur.key) > 0)
+                {
+                    if (best == null || best.key.CompareTo(cur.key) > 0)
+                    {
+                        best = cur;
+                    }
+                    cur = cur.right;
+                }
+
+                else
+                {
+                    cur = cur.left;
+                }
+            }
+
+            if (best == null) // no hay successor
+            {
+                throw new KeyNotFoundException();
+            }
+            return best.key;
+        }
+
+        public int Rank(K key)
+        {
+            TreeNode cur = root;
+            int count = 0;
+            while (cur != null)
+            {
+                if(key.CompareTo(cur.key) > 0)
+                {
+                    count += subtreesize(cur.left) + 1;
+                    cur = cur.right;
+                }
+                else if (key.CompareTo(cur.key) < 0)
+                {
+                    cur = cur.left;
+                }
+                else
+                {
+                    count += subtreesize(cur.left);
+                    break;
+                }
+            }
+
+            return count;
+        }
+
+        public K Select(int pos)
+        {
+            if(pos >= size || pos < 0)
+            {
+                throw new KeyNotFoundException();
+            }
+            int KeysMenores = pos;
+            TreeNode cur = root;
+            while (cur != null)
+            {
+                if (KeysMenores - subtreesize(cur.left) < 0)
+                {
+                    cur = cur.left;
+                }
+                else if (KeysMenores - subtreesize(cur.left) > 0)
+                {
+                    KeysMenores -= subtreesize(cur.left) + 1;
+                    cur = cur.right;
+                }   
+                else
+                {
+                    return cur.key;
+                }
+            }
+            throw new Exception("This is not supposed to happen");
         }
     }
 }
