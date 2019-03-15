@@ -13,6 +13,10 @@ namespace BSTCool
             d.Add(5, "cinco");
             d.Add(8, "ocho");
             d.Add(11, "once");
+            Console.WriteLine(d.GetHeight(3));
+            Console.WriteLine(d.GetHeight(5));
+            Console.WriteLine(d.GetDepth(3));
+            Console.WriteLine(d.GetDepth(8));
             Console.WriteLine(d.Find(3));
             Console.WriteLine(d.Min());
             Console.WriteLine(d.Successor(3));
@@ -48,6 +52,7 @@ namespace BSTCool
 
             var d2 = new OrderedDictionary<DateTime, string>();
             d2.Add(new DateTime(), "xxx");
+
 
             Console.ReadKey();
         }

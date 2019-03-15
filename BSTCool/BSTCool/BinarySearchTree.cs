@@ -20,6 +20,40 @@ namespace BSTCool
                 value = _value;
             }
         }
+        private int Height(TreeNode x)
+        {
+            if(x == null || (x.left == null && x.right == null) )
+            {
+                return 0;
+            }
+
+            return Math.Max(Height(x.left), Height(x.right)) + 1;
+
+        }
+
+        public int GetHeight(K key)
+        {
+          return  Height(FindNode(key));
+        }
+
+        private int Depth(TreeNode x)
+        {
+            TreeNode p = x.parent;
+            if (p == null)
+                return 0;
+            int count = 1;
+            while(p.parent != null)
+            {
+                count++;
+                p = p.parent;
+            }
+            return count;
+        }
+
+        public int GetDepth(K key)
+        {
+            return Depth(FindNode(key));
+        }
 
         private TreeNode root;
         public int size { get; set; }
