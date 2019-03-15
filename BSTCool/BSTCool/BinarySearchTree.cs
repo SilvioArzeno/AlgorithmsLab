@@ -5,16 +5,16 @@ using System.Text;
 namespace BSTCool
 {
     class DuplicateKeyException : Exception { }
-    class OrderedDictionary<V>
+    class OrderedDictionary<K,V> where K : IComparable<K>
     {   
         
         private class TreeNode
         {
-            public int key;
+            public K key;
             public V value;
             public TreeNode left, right, parent;
             public int SubTreeSize = 1;
-            public TreeNode(int _key, V _value )
+            public TreeNode(K _key, V _value )
             {
                 key = _key;
                 value = _value;
@@ -37,7 +37,7 @@ namespace BSTCool
             return subtreesize(root);
         }
 
-        public void Add( int key, V value)
+        public void Add( K key, V value)
         { //Add a new node to the tree
 
              if(size == 0)
@@ -49,16 +49,16 @@ namespace BSTCool
             TreeNode cur = root, prev = null;
             while(cur != null)
             {
-                if(key == cur.key)
+                if(key.CompareTo(cur.key) == 0)
                 {
                     throw new DuplicateKeyException();
                 }
                 prev = cur;
-                if(key < cur.key)
+                if(key.CompareTo(cur.key) < 0)
                 {
                     cur = cur.left;
                 }
-                else if( key > cur.key)
+                else if(key.CompareTo(cur.key) > 0)
                 {
                     cur = cur.right;
                 }
@@ -66,11 +66,11 @@ namespace BSTCool
 
             TreeNode newNode = new TreeNode(key, value);
             newNode.parent = prev;
-            if(key < prev.key)
+            if(key.CompareTo(prev.key) < 0)
             {
                 prev.left = newNode;
             }
-            else if(key > prev.key)
+            else if(key.CompareTo(prev.key) > 0)
             {
                 prev.right = newNode;
             }
@@ -83,7 +83,7 @@ namespace BSTCool
             }
         }
 
-        public V Remove(int key)
+        public V Remove(K key)
         {
             TreeNode x = FindNode(key);
             if (x == null)
@@ -109,11 +109,11 @@ namespace BSTCool
                     root = null;
                     return ret;
                 }
-                if(x.key > p.key)
+                if(x.key.CompareTo(p.key) > 0)
                 {// Hijo derecho
                     p.right = null;
                 }
-                else if(x.key < p.key)
+                else if(x.key.CompareTo(p.key) > 0)
                 {//Hijo Izquierdo
                     p.left = null;
                 }
@@ -186,20 +186,20 @@ namespace BSTCool
             return cur;
         }
 
-        private TreeNode FindNode(int key)
+        private TreeNode FindNode(K key)
         {
             TreeNode cur = root;
             while( cur != null)
             {
-                if(cur.key == key)
+                if(cur.key.CompareTo(key) == 0)
                 {
                     return cur;
                 }
-                if(key < cur.key)
+                if(key.CompareTo(cur.key) < 0)
                 {
                     cur = cur.left;
                 }
-                if(key > cur.key)
+                if(key.CompareTo(cur.key) > 0)
                 {
                     cur = cur.right;
                 }
