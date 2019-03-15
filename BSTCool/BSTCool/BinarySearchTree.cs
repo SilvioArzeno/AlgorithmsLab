@@ -401,5 +401,42 @@ namespace BSTCool
             }
             throw new Exception("This is not supposed to happen");
         }
+
+        public List<K> InOrder()
+        {
+            /* Iteration using stack
+
+            K[] ret = new K[size];
+            Stack<TreeNode> temp = new Stack<TreeNode>();
+            TreeNode cur = root;
+            for (int i = 0; i < size; i++)
+            {
+                while (cur != null)
+                {
+                    temp.Push(cur);
+                    cur = cur.left;
+                }
+                cur = temp.Pop();
+                ret[i] = cur.key;
+                cur = cur.right;
+            }
+            return ret;
+            */
+
+            List<K> Keys = new List<K>();
+            Recursive(Keys, root);
+            return Keys;
+        }
+
+        private void Recursive(List<K> keys, TreeNode cur)
+        {
+            if(cur == null)
+            {
+                return;
+            }
+            Recursive(keys, cur.left);
+            keys.Add(cur.key);
+            Recursive(keys, cur.right);
+        }
     }
 }
