@@ -18,11 +18,11 @@ namespace HashPractice
             test.add("Silvio", 99);
             test.add("Enrique", 113);
             Console.WriteLine(test.Find("Ocho"));
-            for(int i = 0; i < 100000; i++)
+            for(int i = 0; i < 1000; i++)
             {
                 test.add(i.ToString(), i);
             }
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 if(i % 2 == 0 || i % 3 == 0)
                 test.Remove(i.ToString());

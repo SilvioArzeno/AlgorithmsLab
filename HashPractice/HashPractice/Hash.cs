@@ -97,7 +97,7 @@ namespace HashPractice
             {
                 throw new Exception("Duplicate key");
             }
-            double LOAD_FACTOR = Size / arr.Length;
+            double LOAD_FACTOR = (double)Size / arr.Length;
 
             if(LOAD_FACTOR > 0.7)
             {
