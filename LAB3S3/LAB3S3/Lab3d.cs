@@ -66,15 +66,16 @@ public class MyDictionary<V>
         return key * 31 + 987654321;
     }
 
-    public int MAX = 0;
-    const int MAX_PROBES = 1; // Maxima cantidad de probes antes de ir al stash
-    const double MAX_LOAD_FACTOR = 0.5;  // Maximo Load Factor a permitir
+    const int MAX_PROBES = 10; // Maxima cantidad de probes antes de ir al stash
+    const double MAX_LOAD_FACTOR = 0.65;  // Maximo Load Factor a permitir
     const int GROWTH_FACTOR = 2;  // Factor de crecimiento para Resize
-
+    public double time = 0;
 
     // Agregar 'key' al diccionario asociandolo al valor 'value'
     public void Add(int key, V value)
     {
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
         // TODO: Implementar la estrategia descrita en el enunciado.  En adicion
         //       debes hacer ResizeAndReindex si el load factor excede el maximo
         //       load factor permitido
@@ -127,6 +128,8 @@ public class MyDictionary<V>
             }
             Size++;
         }
+        stopwatch.Stop();
+        time += stopwatch.ElapsedMilliseconds;
     }
 
     
@@ -219,7 +222,14 @@ public class Lab3d
 {
     public static void Main(string[] args)
     {
-        var D = new MyDictionary<string>();
+
+        var D = new MyDictionary<int>();
+        for(int i = 0; i < 1000; i++)
+        {
+            D.Add(i, i);
+        }
+        Console.WriteLine("Termino");
+        /*
         D.Add(1, "uno");
         D.Add(10, "diez");
         D.Add(11, "once");
@@ -249,7 +259,7 @@ public class Lab3d
         }
         catch (KeyNotFoundException) {
             Console.WriteLine("OK: key -10 no existe");
-        }
+        }*/
         Console.ReadKey();
         // TODO: Diseña e implementa un experimento para determinar cual es
         //       la complejidad de la operacion Add en el average case.
