@@ -69,13 +69,10 @@ public class MyDictionary<V>
     const int MAX_PROBES = 10; // Maxima cantidad de probes antes de ir al stash
     const double MAX_LOAD_FACTOR = 0.65;  // Maximo Load Factor a permitir
     const int GROWTH_FACTOR = 2;  // Factor de crecimiento para Resize
-    public double time = 0;
 
     // Agregar 'key' al diccionario asociandolo al valor 'value'
     public void Add(int key, V value)
     {
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-        stopwatch.Start();
         // TODO: Implementar la estrategia descrita en el enunciado.  En adicion
         //       debes hacer ResizeAndReindex si el load factor excede el maximo
         //       load factor permitido
@@ -102,7 +99,6 @@ public class MyDictionary<V>
             }
             else
             {
-                pos++;
                 for (int i = 0; i < MAX_PROBES; i++)
                 {
                     if (arr[pos] == null)
@@ -120,16 +116,9 @@ public class MyDictionary<V>
                     }
                 }
 
-                if (!Added)
-                {
-                    stash.Add(x);
-
-                }
             }
             Size++;
         }
-        stopwatch.Stop();
-        time += stopwatch.ElapsedMilliseconds;
     }
 
     
@@ -151,15 +140,8 @@ public class MyDictionary<V>
             }
         }
 
-        KeyValuePair suspect = stash.Find(x => x.key == key);
-        if (suspect != null)
-        {
-            return suspect.value;
-        }
-        else
-        {
-            throw new KeyNotFoundException();
-        }
+        throw new KeyNotFoundException();
+
     }
     
 
@@ -178,7 +160,7 @@ public class MyDictionary<V>
             else
             {
                 int pos = Math.Abs(hash(p.key)) % newCapacity;
-                while (true)
+                for (int i = 0; i < MAX_PROBES; i++)
                 {
                     if (temp[pos] == null)
                     {
@@ -188,6 +170,11 @@ public class MyDictionary<V>
                     if (pos >= newCapacity)
                     {
                         pos = 0;
+                    }
+                    if (i == MAX_PROBES)
+                    {
+                        stash.Add(p);
+                        continue;
                     }
                 }
                 temp[pos] = p;
@@ -223,11 +210,18 @@ public class Lab3d
     public static void Main(string[] args)
     {
 
+
+
+
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
         var D = new MyDictionary<int>();
-        for(int i = 0; i < 1000; i++)
+        for(int i = 0; i < 10000; i++)
         {
             D.Add(i, i);
         }
+        stopwatch.Stop();
+        Console.WriteLine(stopwatch.Elapsed);
         Console.WriteLine("Termino");
         /*
         D.Add(1, "uno");

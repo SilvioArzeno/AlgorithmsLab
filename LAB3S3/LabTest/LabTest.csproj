@@ -6,9 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="David Bujosa.cs" />
-    <Compile Remove="Lab2h.cs" />
-    <Compile Remove="Lab4a.cs" />
     <Compile Remove="Program.cs" />
   </ItemGroup>
 

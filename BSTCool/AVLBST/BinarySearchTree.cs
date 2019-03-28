@@ -5,6 +5,7 @@ using System.Text;
 namespace BSTCool
 {
     class DuplicateKeyException : Exception { }
+    class InvalidRotation : Exception { }
     class OrderedDictionary<K,V> where K : IComparable<K>
     {   
         
@@ -20,24 +21,35 @@ namespace BSTCool
                 value = _value;
             }
         }
+
+        
         private int Height(TreeNode x)
         {
-            if(x == null || (x.left == null && x.right == null) )
+            if (x == null)
+            {
+                return -1;
+            }
+            if (x.left == null && x.right == null)
             {
                 return 0;
             }
-
+            
             return Math.Max(Height(x.left), Height(x.right)) + 1;
 
         }
 
         private int Balance_Factor(TreeNode x)
         {
-            return subtreesize(x.right) - subtreesize(x.left);
+            if(x == null)
+            {
+                return -1;
+            }
+            return Height(x.right) - Height(x.left);
         }
 
         public int GetHeight(K key)
         {
+           
           return  Height(FindNode(key));
         }
 
@@ -120,6 +132,90 @@ namespace BSTCool
                 cur.SubTreeSize = subtreesize(cur.left) + subtreesize(cur.right) + 1;
                 cur = cur.parent;
             }
+
+            cur = prev;
+            while(cur != null)
+            {
+                int HBF = Balance_Factor(cur);
+                if(Math.Abs(HBF) > 1)
+                {
+                    if(HBF < 0)
+                    {
+                        if(Balance_Factor(cur.left) > 0)
+                        {
+                            rotateLeft(cur.left);
+                        }
+
+                        rotateRight(cur);
+                    }
+                    else
+                    {
+                        if( Balance_Factor(cur.right) < 0)
+                        {
+                            rotateRight(cur.right);
+                        }
+                        rotateLeft(cur);
+                    }
+                }
+                cur.SubTreeSize = subtreesize(cur.left) + subtreesize(cur.right) + 1;
+                cur = cur.parent;
+            }
+
+        }
+        /** 
+            *  rotateLeft(P) rota el nodo P hacia la izquierda.
+            **/
+        private void rotateLeft(TreeNode P)
+        {
+            if (P == null || P.right == null)
+                throw new InvalidRotation();
+
+            TreeNode par = P.parent;
+            TreeNode Q = P.right;
+            TreeNode B = Q.left;
+            if (B != null)
+                B.parent = P;
+            P.right = B;
+            P.parent = Q;
+            Q.left = P;
+            Q.parent = par;
+            if (par != null)
+            {
+                if (P == par.left)
+                    par.left = Q;
+                else
+                    par.right = Q;
+            }
+            else
+                root = Q;
+        }
+
+        /** 
+         *  rotateRight(Q) rota el nodo Q hacia la derecha.
+         **/
+        private void rotateRight(TreeNode Q)
+        {
+            if (Q == null || Q.left == null)
+                throw new InvalidRotation();
+
+            TreeNode par = Q.parent;
+            TreeNode P = Q.left;
+            TreeNode B = P.right;
+            if (B != null)
+                B.parent = Q;
+            Q.left = B;
+            Q.parent = P;
+            P.right = Q;
+            P.parent = par;
+            if (par != null)
+            {
+                if (Q == par.left)
+                    par.left = P;
+                else
+                    par.right = P;
+            }
+            else
+                root = P;
         }
 
         public V Remove(K key)
@@ -132,6 +228,7 @@ namespace BSTCool
             V ret = RemoveNode(x);
             size--;
             return ret;
+
 
 
         }
@@ -208,6 +305,31 @@ namespace BSTCool
                 cur.SubTreeSize = subtreesize(cur.left) +
                                   subtreesize(cur.right) + 1;
                 cur = cur.parent;
+            }
+            cur = p;
+            while (cur != null)
+            {
+                int HBF = Balance_Factor(cur);
+                if (Math.Abs(HBF) > 1)
+                {
+                    if (HBF < 0)
+                    {
+                        if (Balance_Factor(cur.left) > 0)
+                        {
+                            rotateLeft(cur.left);
+                        }
+
+                        rotateRight(cur);
+                    }
+                    else
+                    {
+                        if (Balance_Factor(cur.right) < 0)
+                        {
+                            rotateRight(cur.right);
+                        }
+                        rotateLeft(cur);
+                    }
+                }
             }
             return ret;
         }
