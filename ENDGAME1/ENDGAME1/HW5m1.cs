@@ -130,10 +130,15 @@ class HW5
             {
                 CurrentLapse.AddLast(events[i]);
             }
-            else if (events[i].day <= CurrentLapse.First.Value.day + K)
+            else if (events[i].day < CurrentLapse.First.Value.day + K)
             {
                 CurrentLapse.AddLast(events[i]);
                 TempEnd = events[i].day;
+                if(CurrentLapse.Count == events.Length)                            // Caso SUPER especial donde todos los eventos estan en un solo intervalo.
+                {
+                    end = TempEnd;
+                    counter = CurrentLapse.Count;
+                }
             }
             else
             {
@@ -176,7 +181,7 @@ class HW5
         string WorstBarrio = string.Empty;
         for (int i = 0; i < events.Length; i++)                                       // Esto itera N veces
         {
-            if (CriminalRecord.TryGetValue(events[i].location, out int count))       // En caso de ser True , ambos el Remove y el Add del dictionary son O(1)
+            if (CriminalRecord.TryGetValue(events[i].location, out int count))       // En caso de ser True , ambos el Remove y el Add del dictionary son O(1) al igual que el TryGetValue.
             {
                 count++;
                 CriminalRecord.Remove(events[i].location);
@@ -193,7 +198,7 @@ class HW5
             }
         }
 
-        Result2 result = new Result2(WorstBarrio, KillCount);                        // Asi que mi Complejidad Average Case es Theta(N);
+        Result2 result = new Result2(WorstBarrio, KillCount);                        // Asi que mi Complejidad Average Case es O(N);
         return result;
     }
 
@@ -217,8 +222,109 @@ class HW5
         // Valor: 8 puntos
 
 
+        Queue<Event> CurrentLapse = new Queue<Event>();
+        Dictionary<string, int> CurrentRecord = new Dictionary<string, int>();
+        int TempEnd = 0, end = 0,KillCount = 0, tempMax = 0;
+        string WorstBarrio = string.Empty, TempWorstBarrio = string.Empty;
+        for (int i = 0; i < events.Length; i++)                                   // Itera N veces donde N es la cantidad de eventos en Events
+        {
+            if (CurrentLapse.Count == 0)
+            {
+                CurrentLapse.Enqueue(events[i]);                                             // Enqueue de Queue y Add de Dictionary son ambos O(1)
+                CurrentRecord.Add(events[i].location, 1);
+            }
+            else if (events[i].day < CurrentLapse.Peek().day + K)                                 // El Peek es O(1)
+            {
+                CurrentLapse.Enqueue(events[i]);
+                if (CurrentRecord.TryGetValue(events[i].location, out int Freq))                                // El TryGetValue Tambien
+                {
+                    CurrentRecord.Remove(events[i].location);
+                    CurrentRecord.Add(events[i].location, Freq+1);
+                    if(Freq+1 >= tempMax)
+                    {
+                        tempMax = Freq+1;
+                        TempWorstBarrio = events[i].location;
+                       
+                    }
+                }
+                else
+                {
+                    CurrentRecord.Add(events[i].location, 1);
+                }
+                TempEnd = events[i].day;
+                if(CurrentLapse.Count == events.Length)                                           // Caso SUPER especial donde todos los eventos estan en el mismo intervalo.
+                {
+                    end = TempEnd;
+                    KillCount = tempMax;
+                    WorstBarrio = TempWorstBarrio;
+                }
+            }
+            else
+            {
+                if (tempMax >= KillCount)                                              
+                {
+                    KillCount = tempMax;
+                    WorstBarrio = TempWorstBarrio;
+                    end = TempEnd;
+                    Event Removed = CurrentLapse.Dequeue();
+                    if (CurrentRecord.TryGetValue(Removed.location, out int Freq))
+                    {
+                        if (Freq == tempMax)
+                        {
+                            CurrentRecord.Remove(Removed.location);
+                            CurrentRecord.Add(Removed.location, Freq - 1);
+                            tempMax--;
+                            if (Freq - 1 == 0)
+                            {
+                                CurrentRecord.Remove(Removed.location);
+                            }
+                        }
+                        else if (Freq == 1)
+                        {
+                            CurrentRecord.Remove(Removed.location);
+                        }
+                        else
+                        {
 
-        return null;
+                            CurrentRecord.Remove(Removed.location);
+                            CurrentRecord.Add(Removed.location, Freq - 1);
+                        }
+                    }
+                    i--;
+                }
+                else
+                {
+                    Event Removed = CurrentLapse.Dequeue();
+                    if (CurrentRecord.TryGetValue(Removed.location, out int Freq))
+                    {
+                        if (Freq == tempMax)
+                        {
+                            CurrentRecord.Remove(Removed.location);
+                            CurrentRecord.Add(Removed.location, Freq - 1);
+                            tempMax--;
+                            if(Freq - 1 == 0)
+                            {
+                                CurrentRecord.Remove(Removed.location);
+                            }
+                        }
+                        else if (Freq == 1)
+                        {
+                            CurrentRecord.Remove(Removed.location);
+                        }
+                        else
+                        {
+
+                            CurrentRecord.Remove(Removed.location);
+                            CurrentRecord.Add(Removed.location, Freq - 1);
+                        }
+                    }
+                    i--;
+                }
+            }
+        }
+                                  // La complejidad Avg Case es O(N)
+
+        return new Result3(end - K + 1 > 0 ? end - K + 1 : 0  , end < K ? K : end, WorstBarrio, KillCount);
     }
 
 
@@ -298,7 +404,7 @@ class HW5
 
         // Para Windows, cambia este nombre por el full path del fichero que
         // contiene el test case.  Ejemplo: @"C:\Users\JohnDoe\input1.txt"
-        string filename = @"C:\Users\Silvio Arzeno\Desktop\tests\input1.txt";
+        string filename = @"C:\Users\Silvio Arzeno\Desktop\tests\input4.txt";
 
         int K;
         Event[] events;
