@@ -35,7 +35,6 @@
 using System;
 using System.Collections.Generic;
 
-
 // Definicion de un evento
 public class Event
 {
@@ -114,41 +113,36 @@ class HW5
         // Valor: 3 puntos
 
         Queue<Event> CurrentLapse = new Queue<Event>();
-        int Start = 0 , end = 0, counter = 0;
-        int TempStart = 0, Tempend = 0;
-           for(int i = 0; i < events.Length; i++)
-           {
-            if(CurrentLapse.Count == 0)
+         int TempEnd = 0, end = 0, counter = 0;
+        for (int i = 0; i < events.Length; i++)
+        {
+            if (CurrentLapse.Count == 0)
             {
                 CurrentLapse.Enqueue(events[i]);
-                TempStart = i;
             }
-            else if ( events[i].day <= CurrentLapse.Peek().day + K)
+            else if (events[i].day <= CurrentLapse.Peek().day + K)
             {
                 CurrentLapse.Enqueue(events[i]);
-                Tempend = i;
+                TempEnd = events[i].day;
             }
             else
-            { 
-            
-               if(CurrentLapse.Count >= counter)
+            {
+
+                if (CurrentLapse.Count >= counter)
                 {
                     counter = CurrentLapse.Count;
-                    Start = events[TempStart].day;
-                    end = events[Tempend].day;
+                    end = TempEnd;
                     CurrentLapse.Dequeue();
-                    TempStart++;
                     i--;
                 }
                 else
                 {
                     CurrentLapse.Dequeue();
-                    TempStart++;
                     i--;
                 }
             }
-           }
-        Result1 result = new Result1(Start, end, counter);
+        }
+        Result1 result = new Result1(end - K + 1 >= 0 ? end - K + 1: 0, end, counter);
         return result;
     }
 
@@ -169,28 +163,30 @@ class HW5
         Dictionary<string, int> CriminalRecord = new Dictionary<string, int>();
         int KillCount = 0;
         string WorstBarrio = string.Empty;
-        for(int i = 0; i < events.Length; i++)
+        for (int i = 0; i < events.Length; i++)                                       // Esto itera N veces
         {
-            if (CriminalRecord.TryGetValue(events[i].location, out int count))
+            if (CriminalRecord.TryGetValue(events[i].location, out int count))       // En caso de ser True , ambos el Remove y el Add del dictionary son O(1)
             {
                 count++;
-                if(count >= KillCount)
+                CriminalRecord.Remove(events[i].location);
+                CriminalRecord.Add(events[i].location, count);
+                if (count >= KillCount)
                 {
                     KillCount = count;
                     WorstBarrio = events[i].location;
                 }
-            }  
+            }
             else
             {
-                CriminalRecord.Add(events[i].location, 1);
+                CriminalRecord.Add(events[i].location, 1);                           // Otro Add que seria O(1)
             }
         }
 
-        Result2 result = new Result2(WorstBarrio, KillCount);
+        Result2 result = new Result2(WorstBarrio, KillCount);                        // Asi que mi Complejidad Average Case es Theta(N);
         return result;
     }
 
-    
+
     /*
      * Determina la localidad con mayor cantidad de homicidios en cualquier
      * intervalo de K dias y devuelve esa localidad, la cantidad de homicidios
@@ -203,44 +199,340 @@ class HW5
         // TODO: implementar algoritmo que resuelva este problema e indique cual
         //       es su complejidad average case
         //       Para simplificar, puedes asumir que el dia maximo es D = 10000
-        // Complejidad esperada: mejor que O((N-K)*K) y mejor que O(K^2)
+        // Complejidad esperada: mejor que O((N-K)*K) y mejor que O(N^2)
         // Valor: 8 puntos
 
+        Queue<Event> CurrentLapse = new Queue<Event>();
+        int TempEnd = 0, end = 0, MaxKillCount = 0;
+        string WorstBarrio = string.Empty;
+        for (int i = 0; i < events.Length; i++)                                // Itera e 
+            4l arreglo N veces donde N es la cantidad de elementos en el arreglo
+        {
+            if (CurrentLapse.Count == 0)
+            {
+                CurrentLapse.Enqueue(events[i]);
+            }
+            else if (events[i].day <= CurrentLapse.Peek().day + K)
+            {
+                CurrentLapse.Enqueue(events[i]);
+                TempEnd = events[i].day;
+            }
+            else
+            {
+               Result2 Suspect =  MostFrequentLocation(CurrentLapse.ToArray());   // Itera K veces donde K es el intervalo de dias pero convierte el Queue en arreglo que es O(N)  
+                
+                if (Suspect.count >= MaxKillCount)
+                {
+                    MaxKillCount = Suspect.count;
+                    end = TempEnd;
+                    WorstBarrio = Suspect.location;
+                    CurrentLapse.Dequeue();
+                    i--;
+                }
+                else
+                {
+                    CurrentLapse.Dequeue();
+                    i--;
+                }
+            }
+            // La complejidad seria O(N*K) Average Case
+        }
+        Result3 result = new Result3(end - K + 1 >= 0 ? end - K + 1 : 0, end, WorstBarrio, MaxKillCount);
+        return result;
 
-        return null;
     }
+
+
 
 
 
     public static void Main(string[] args)
     {
         Event[] events = {
+
             new Event( 1, "Villa Francisca"),
             new Event( 4, "Capotillo"),
             new Event( 5, "Capotillo"),
             new Event( 5, "Capotillo"),
-            new Event(10, "Cristo Rey"),
-            new Event(10, "Los Guandules"),
-            new Event(10, "La Zurza"),
-            new Event(12, "Gualey"),
-            new Event(13, "Villa Juana"),
-            new Event(16, "27 de Febrero"),
-            new Event(16, "Los Guandules"),
-            new Event(17, "San Carlos"),
-            new Event(22, "Palma Real"),
-            new Event(25, "Palma Real"),
-            new Event(26, "Villa Consuelo"),
-            new Event(28, "Los Rios"),
-            new Event(33, "Villas Agricolas"),
-            new Event(38, "La Cienaga"),
-            new Event(38, "Capotillo"),
-            new Event(41, "Ensanche Espaillat"),
-            new Event(41, "La Zurza"),
-            new Event(42, "Los Guandules"),
-            new Event(42, "San Carlos"),
-            new Event(42, "Villa Consuelo"),
-            new Event(42, "Los Guandules"),
-            new Event(47, "Cristo Rey")
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event( 6, "Joa's Class"),
+            new Event(2010, "Cristo Rey"),
+            new Event(2010, "Los Guandules"),
+            new Event(2110, "La Zurza"),
+            new Event(2112, "Gualey"),
+            new Event(2113, "Villa Juana"),
+            new Event(2116, "27 de Febrero"),
+            new Event(3116, "Los Guandules"),
+            new Event(3117, "San Carlos"),
+            new Event(3222, "Palma Real"),
+            new Event(3225, "Palma Real"),
+            new Event(3226, "Villa Consuelo"),
+            new Event(3328, "Los Rios"),
+            new Event(3333, "Villas Agricolas"),
+            new Event(3438, "La Cienaga"),
+            new Event(3538, "Capotillo"),
+            new Event(3541, "Ensanche Espaillat"),
+            new Event(641, "La Zurza"),
+            new Event(642, "Los Guandules"),
+            new Event(642, "San Carlos"),
+            new Event(742, "Villa Consuelo"),
+            new Event(742, "Los Guandules"),
+            new Event(747, "Cristo Rey")
         };
 
         var res1 = MaxNumberOfEventsInAnyKDayInterval(events, 7);
@@ -264,15 +556,15 @@ class HW5
         Console.WriteLine();
     }
 
-/*
+    /*
 
-Mi output:
+    Mi output:
 
-La maxima cantidad de eventos en 7 dias fueron 8 y ocurrieron entre el dia 36 y 42.
+    La maxima cantidad de eventos en 7 dias fueron 8 y ocurrieron entre el dia 36 y 42.
 
-La localidad con mayor cantidad de homicidios es Capotillo donde hubo un total de 4 homicidios.
+    La localidad con mayor cantidad de homicidios es Capotillo donde hubo un total de 4 homicidios.
 
-Del dia 4 al dia 10, la localidad con mas homicidios es Capotillo con 3 homicidios.
+    Del dia 4 al dia 10, la localidad con mas homicidios es Capotillo con 3 homicidios.
 
-*/
+    */
 }

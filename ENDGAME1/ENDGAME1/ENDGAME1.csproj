@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="HW5m.cs" />
     <Compile Remove="Program.cs" />
   </ItemGroup>
 
