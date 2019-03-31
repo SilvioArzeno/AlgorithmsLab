@@ -122,7 +122,7 @@ class HW5
         // Complejidad esperada: mejor que O((N-K)*K)
         // Valor: 3 puntos
 
-        LinkedList<Event> CurrentLapse = new LinkedList<Event>();
+        LinkedList<Event> CurrentLapse = new LinkedList<Event>();                       // LinkedList donde se guardan los elementos del intervalo actual
         int TempEnd = 0, end = 0, counter = 0;
         for (int i = 0; i < events.Length; i++)
         {
@@ -179,7 +179,7 @@ class HW5
         Dictionary<string, int> CriminalRecord = new Dictionary<string, int>();
         int KillCount = 0;
         string WorstBarrio = string.Empty;
-        for (int i = 0; i < events.Length; i++)                                       // Esto itera N veces
+        for (int i = 0; i < events.Length; i++)                                       // itera N veces donde N es el tamaño del arreglo
         {
             if (CriminalRecord.TryGetValue(events[i].location, out int count))       // En caso de ser True , ambos el Remove y el Add del dictionary son O(1) al igual que el TryGetValue.
             {
@@ -236,7 +236,7 @@ class HW5
             else if (events[i].day < CurrentLapse.Peek().day + K)                                 // El Peek es O(1)
             {
                 CurrentLapse.Enqueue(events[i]);
-                if (CurrentRecord.TryGetValue(events[i].location, out int Freq))                                // El TryGetValue Tambien
+                if (CurrentRecord.TryGetValue(events[i].location, out int Freq))                                // El TryGetValue Tambien es O(1) Avg Case
                 {
                     CurrentRecord.Remove(events[i].location);
                     CurrentRecord.Add(events[i].location, Freq+1);
@@ -322,9 +322,9 @@ class HW5
                 }
             }
         }
-                                  // La complejidad Avg Case es O(N)
+                                  // La complejidad Avg Case es O(N) ya que todas las operaciones en las iteraciones son O(1)
 
-        return new Result3(end - K + 1 > 0 ? end - K + 1 : 0  , end < K ? K : end, WorstBarrio, KillCount);
+        return new Result3(end - K + 1 > 0 ? end - K + 1 : 0  , end < K ? K-1 : end, WorstBarrio, KillCount);
     }
 
 
@@ -404,7 +404,7 @@ class HW5
 
         // Para Windows, cambia este nombre por el full path del fichero que
         // contiene el test case.  Ejemplo: @"C:\Users\JohnDoe\input1.txt"
-        string filename = @"C:\Users\Silvio Arzeno\Desktop\tests\input4.txt";
+        string filename = @"C:\Users\Silvio Arzeno\Desktop\tests\input1.txt";
 
         int K;
         Event[] events;
