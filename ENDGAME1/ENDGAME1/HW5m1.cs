@@ -157,7 +157,7 @@ class HW5
                 }
             }
         }
-        Result1 result = new Result1(end - K + 1 >= 0 ? end - K + 1 : 0, end, counter);
+        Result1 result = new Result1(end - K + 1 >= 0 ? end - K + 1 : 1 , end < K ? K : end, counter);
         return result;
     }
 
@@ -324,7 +324,7 @@ class HW5
         }
                                   // La complejidad Avg Case es O(N) ya que todas las operaciones en las iteraciones son O(1)
 
-        return new Result3(end - K + 1 > 0 ? end - K + 1 : 0  , end < K ? K-1 : end, WorstBarrio, KillCount);
+        return new Result3(end - K + 1 > 0 ? end - K + 1 : 1  , end < K ? K : end, WorstBarrio, KillCount);
     }
 
 
@@ -404,11 +404,10 @@ class HW5
 
         // Para Windows, cambia este nombre por el full path del fichero que
         // contiene el test case.  Ejemplo: @"C:\Users\JohnDoe\input1.txt"
-        string filename = @"C:\Users\Silvio Arzeno\Desktop\tests\input1.txt";
+        string filename = @"C:\Users\Silvio Arzeno\Desktop\input6.txt";
 
-        int K;
         Event[] events;
-        ReadTestFromFile(filename, out K, out events);
+        ReadTestFromFile(filename, out int K, out events);
 
         Array.Sort(events,
                    delegate(Event a, Event b) {
