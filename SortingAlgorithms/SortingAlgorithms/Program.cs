@@ -200,13 +200,102 @@ namespace SortingAlgorithms
 
         }
 
+        static int partition(int[] arr, int left, int right)
+        {
+            Random rnd = new Random();
+            int pivot = arr[rnd.Next(arr.Length-1)];
+            while (true)
+            {
+
+                while (arr[left] < pivot)
+                {
+                    left++;
+                }
+
+                while (arr[right] > pivot)
+                {
+                    right--;
+                }
+
+                if (left < right)
+                {
+                    if (arr[left] == arr[right]) return right;
+
+                    int temp = arr[left];
+                    arr[left] = arr[right];
+                    arr[right] = temp;
+
+
+                }
+                else
+                {
+                    return right;
+                }
+            }
+        }
+            static void QuickSort(int[] A)
+        {
+            QuickSort(A, 0, A.Length - 1);
+        }
+
+        /* The main function that implements QuickSort() 
+        arr[] --> Array to be sorted, 
+        low --> Starting index, 
+        high --> Ending index */
+        static void QuickSort(int[] arr, int low, int high)
+        {
+            if(arr.Length < 10)
+            {
+                InsertionSort(arr);
+            }
+            else if (low < high)
+            {
+
+                /* pi is partitioning index, arr[pi] is  
+                now at right place */
+                int pi = partition(arr, low, high);
+
+                // Recursively sort elements before 
+                // partition and after partition 
+                QuickSort(arr, low, pi - 1);
+                QuickSort(arr, pi + 1, high);
+            }
+        }
+        static int[] CountingSort(int[]array)
+        {
+        int[] count = new int[11];
+
+        for (int i = 0; i<array.Length; i++)
+        {
+            int value = array[i];
+        count[value]++;
+        }
+
+        for (int i = 1; i<count.Length; i++)
+        {
+            count[i] = count[i] + count[i - 1];
+        }
+
+int[] sorted = new int[array.Length];
+
+        for (int i = array.Length - 1; i >= 0; i--)
+        {
+            int value = array[i];
+int position = count[value] - 1;
+sorted[position] = value;
+
+            count[value]--;
+        }
+
+        return sorted;
+    }
         static void Main(string[] args)
         {
-            int[] arr = { 9, 8, 7, 6, 6, 5, 4, 4, 3, 2, 1, 0 };
+            int[] arr = { 9, 0, 7, 12, 8, 5, 3, 4, 7, 2, 1, 0 };
 
             Console.Write("Unsorted array : ");
             PrintArray(arr);
-            MergeSort(arr);
+            QuickSort(arr);
             Console.Write("Sorted array: ");
             PrintArray(arr);
             Console.ReadKey();
